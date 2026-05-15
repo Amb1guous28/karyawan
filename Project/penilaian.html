@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Penilaian</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="sidebar">
+<h2>Penilaian</h2>
+<a href="dashboard.html">Dashboard</a>
+<a href="karyawan.html">Data Karyawan</a>
+<a href="penilaian.html">Penilaian</a>
+<a href="hasil.html">Hasil SAW</a>
+</div>
+<div class="content">
+<h1>Input Penilaian Karyawan</h1>
+<div class="card">
+<form id="formNilai" class="grid-form">
+<div class="full-width">
+<label>Pilih Karyawan</label>
+<select id="nama" required>
+<option value="">-- Pilih Karyawan --</option>
+</select>
+</div>
+<div>
+<label>C1 - Kehadiran</label>
+<input type="number" id="C1" placeholder="0 - 100" required>
+</div>
+<div>
+<label>C2 - Ketepatan Waktu</label>
+<input type="number" id="C2" placeholder="0 - 100" required>
+</div>
+<div>
+<label>C3 - Penjualan</label>
+<input type="number" id="C3" placeholder="0 - 100" required>
+</div>
+<div>
+<label>C4 - Kecepatan Pelayanan</label>
+<input type="number" id="C4" placeholder="0 - 100" required>
+</div>
+<div>
+<label>C5 - Kepuasan Pelanggan</label>
+<input type="number" id="C5" placeholder="0 - 100" required>
+</div>
+<div>
+<label>C6 - Kedisiplinan</label>
+<input type="number" id="C6" placeholder="0 - 100" required>
+</div>
+<div>
+<label>C7 - Kerja Sama Tim</label>
+<input type="number" id="C7" placeholder="0 - 100" required>
+</div>
+<div>
+<label>C8 - Tanggung Jawab</label>
+<input type="number" id="C8" placeholder="0 - 100" required>
+</div>
+<div>
+<label>C9 - Komunikasi</label>
+<input type="number" id="C9" placeholder="0 - 100" required>
+</div>
+<div>
+<label>C10 - Jumlah Komplain</label>
+<input type="number" id="C10" placeholder="0 - 100" required>
+</div>
+<div class="full-width">
+<button type="submit">
+ Simpan Penilaian
+</button>
+</div>
+</form>
+</div>
+</div>
+<script>
+const form = document.getElementById('formNilai');
+let dataPenilaian = JSON.parse(localStorage.getItem('penilaian')) || [];
+let dataKaryawan = JSON.parse(localStorage.getItem('karyawan')) || [];
+const selectNama = document.getElementById('nama');
+function loadKaryawan(){
+selectNama.innerHTML = `
+ <option value="">-- Pilih Karyawan --</option>
+ `;
+dataKaryawan.forEach(item => {
+selectNama.innerHTML += `
+ <option value="${item.nama}">
+${item.nama}
+ </option>
+ `;
+});
+}
+loadKaryawan();
+form.addEventListener('submit',(e)=>{
+e.preventDefault();
+const data = {
+nama:document.getElementById('nama').value,
+C1:Number(document.getElementById('C1').value),
+C2:Number(document.getElementById('C2').value),
+C3:Number(document.getElementById('C3').value),
+C4:Number(document.getElementById('C4').value),
+C5:Number(document.getElementById('C5').value),
+C6:Number(document.getElementById('C6').value),
+C7:Number(document.getElementById('C7').value),
+C8:Number(document.getElementById('C8').value),
+C9:Number(document.getElementById('C9').value),
+C10:Number(document.getElementById('C10').value)
+};
+dataPenilaian.push(data);
+localStorage.setItem(
+'penilaian',
+JSON.stringify(dataPenilaian)
+);
+alert('Penilaian berhasil disimpan');
+form.reset();
+});
+</script>
+<script src="app.js"></script>
+</body>
+</html>

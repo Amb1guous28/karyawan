@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Data Karyawan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="sidebar">
+<h2>SPK SAW</h2>
+<a href="dashboard.html">Dashboard</a>
+<a href="karyawan.html">Data Karyawan</a>
+<a href="penilaian.html">Penilaian</a>
+<a href="hasil.html">Hasil SAW</a>
+</div>
+<div class="content">
+<h1>Data Karyawan</h1>
+<div class="card">
+<form id="formKaryawan">
+<input type="text" id="nama" placeholder="Nama Karyawan" required>
+<button type="submit">
+ Simpan
+</button>
+</form>
+</div>
+<div class="card">
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Nama</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+</div>
+<script>
+const form = document.getElementById('formKaryawan');
+const tbody = document.getElementById('tbody');
+let dataKaryawan = JSON.parse(localStorage.getItem('karyawan')) || [];
+function tampilData(){
+tbody.innerHTML = '';
+dataKaryawan.forEach((item,index)=>{
+const row = `
+ <tr>
+ <td>${index + 1}</td>
+ <td>${item.nama}</td>
+ <td>
+ <button type="button" class="btn-edit"
+onclick="editKaryawan(${index})">
+ Ubah
+ </button>
+ <button type="button" class="btn-delete"
+onclick="hapusKaryawan(${index})">
+ Hapus
+ </button>
+ </td>
+ </tr>
+ `;
+tbody.innerHTML += row;
+});
+}
+form.addEventListener('submit',(e)=>{
+e.preventDefault();
+const nama = document.getElementById('nama').value;
+dataKaryawan.push({ nama });
+localStorage.setItem(
+'karyawan',
+JSON.stringify(dataKaryawan)
+);
+form.reset();
+tampilData();
+});
+function editKaryawan(index){
+const namaBaru = prompt(
+'Masukkan nama baru:',
+dataKaryawan[index].nama
+);
+if(namaBaru && namaBaru.trim() !== ''){
+dataKaryawan[index].nama = namaBaru;
+localStorage.setItem(
+'karyawan',
+JSON.stringify(dataKaryawan)
+);
+tampilData();
+}
+}
+function hapusKaryawan(index){
+const konfirmasi = confirm(
+'Yakin ingin menghapus karyawan ini?'
+);
+if(konfirmasi){
+dataKaryawan.splice(index, 1);
+localStorage.setItem(
+'karyawan',
+JSON.stringify(dataKaryawan)
+);
+tbody.innerHTML = '';
+tampilData();
+alert('Data karyawan berhasil dihapus');
+}
+}
+tampilData();
+</script>
+<script src="app.js"></script>
+</body>
+</html>
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Data Karyawan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="sidebar">
+<h2>Data Karyawan</h2>
+<a href="dashboard.html">Dashboard</a>
+<a href="karyawan.html">Data Karyawan</a>
+<a href="penilaian.html">Penilaian</a>
+<a href="hasil.html">Hasil SAW</a>
+</div>
+<script>
+const form = document.getElementById('formKaryawan');
+const tbody = document.getElementById('tbody');
+let dataKaryawan = JSON.parse(localStorage.getItem('karyawan')) || [];
+function tampilData(){
+tbody.innerHTML = '';
+dataKaryawan.forEach((item,index)=>{
+tbody.innerHTML += `
+ <tr>
+ <td>${index+1}</td>
+ <td>${item.nama}</td>
+ <td>
+ <button onclick="editKaryawan(${index})" class="btn-edit">
+ Ubah
+ </button>
+ <button onclick="hapusKaryawan(${index})" class="btndelete">
+ Hapus
+ </button>
+ </td>
+ </tr>
+ `;
+});
+}
+form.addEventListener('submit',(e)=>{
+e.preventDefault();
+const nama = document.getElementById('nama').value;
+dataKaryawan.push({ nama });
+localStorage.setItem(
+'karyawan',
+JSON.stringify(dataKaryawan)
+);
+form.reset();
+tampilData();
+function editKaryawan(index){
+const namaBaru = prompt(
+'Ubah Nama Karyawan',
+dataKaryawan[index].nama
+);
+if(namaBaru){
+dataKaryawan[index].nama = namaBaru;
+localStorage.setItem(
+'karyawan',
+JSON.stringify(dataKaryawan)
+);
+tampilData();
+}
+}
+function hapusKaryawan(index){
+const konfirmasi = confirm(
+'Yakin ingin menghapus data ini?'
+);
+if(konfirmasi){
+dataKaryawan.splice(index,1);
+localStorage.setItem(
+'karyawan',
+JSON.stringify(dataKaryawan)
+);
+tampilData();
+}
+}
+});
+tampilData();
+function hapusHasil(nama){
+const konfirmasi = confirm(
+'Yakin ingin menghapus hasil ini?'
+);
+if(!konfirmasi){
+return;
+}
+let penilaian = JSON.parse(
+localStorage.getItem('penilaian')
+) || [];
+const dataBaru = penilaian.filter(item =>
+item.nama !== nama
+);
+localStorage.setItem(
+'penilaian',
+JSON.stringify(dataBaru)
+);
+alert('Data berhasil dihapus');
+location.reload();
+}
+</script>
+<script src="app.js"></script>
+</body>
+</html>

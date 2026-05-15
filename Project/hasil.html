@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hasil SAW</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="sidebar">
+<h2>hasil</h2>
+<a href="dashboard.html">Dashboard</a>
+<a href="karyawan.html">Data Karyawan</a>
+<a href="penilaian.html">Penilaian</a>
+<a href="hasil.html">Hasil SAW</a>
+</div>
+<div class="content">
+<h1>Hasil Ranking SAW</h1>
+<div class="card">
+<table>
+<thead>
+<tr>
+<th>Ranking</th>
+<th>Nama</th>
+<th>Nilai SAW</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody id="hasil"></tbody>
+</table>
+</div>
+</div>
+<script>
+const hasil = document.getElementById('hasil');
+let data = JSON.parse(localStorage.getItem('penilaian')) || [];
+const bobot = {
+C1:0.10,
+C2:0.10,
+C3:0.15,
+C4:0.10,
+C5:0.15,
+C6:0.10,
+C7:0.10,
+C8:0.10,
+C9:0.05,
+C10:0.05
+};
+const ranking = data.map(item=>{
+let total =
+(item.C1 * bobot.C1) +
+(item.C2 * bobot.C2) +
+(item.C3 * bobot.C3) +
+(item.C4 * bobot.C4) +
+(item.C5 * bobot.C5) +
+(item.C6 * bobot.C6) +
+(item.C7 * bobot.C7) +
+(item.C8 * bobot.C8) +
+(item.C9 * bobot.C9) +
+(item.C10 * bobot.C10);
+return {
+nama:item.nama,
+total:total.toFixed(2)
+};
+});
+ranking.sort((a,b)=>b.total-a.total);
+ranking.forEach((item,index)=>{
+hasil.innerHTML += `
+ <tr>
+ <td>${index+1}</td>
+ <td>${item.nama}</td>
+ <td>${item.total}</td>
+ <td>
+ <button class="btn-delete" onclick="hapusHasil('${item.nama}')">
+ Hapus
+ </button>
+ </td>
+ </tr>
+ `;
+});
+function hapusHasil(nama){
+const konfirmasi = confirm(
+'Yakin ingin menghapus hasil ini?'
+);
+if(konfirmasi){
+let penilaian = JSON.parse(
+localStorage.getItem('penilaian')
+) || [];
+penilaian = penilaian.filter(item =>
+item.nama !== nama
+);
+localStorage.setItem(
+'penilaian',
+JSON.stringify(penilaian)
+);
+location.reload();
+}
+}
+</script>
+<script src="app.js"></script>
+</body>
+</html>
+<tr>
+<th>Ranking</th>
+<th>Nama</th>
+<th>Nilai SAW</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody id="hasil"></tbody>
+</table>
+</div>
+</div>
+<script>
+const hasil = document.getElementById('hasil');
+const data = JSON.parse(localStorage.getItem('penilaian')) || [];
+const bobot = {
+C1:0.10,
+C2:0.10,
+C3:0.15,
+C4:0.10,
+C5:0.15,
+C6:0.10,
+C7:0.10,
+C8:0.10,
+C9:0.05,
+C10:0.05
+};
+const ranking = data.map(item=>{
+let total =
+(item.C1 * bobot.C1) +
+(item.C2 * bobot.C2) +
+(item.C3 * bobot.C3) +
+(item.C4 * bobot.C4) +
+(item.C5 * bobot.C5) +
+(item.C6 * bobot.C6) +
+(item.C7 * bobot.C7) +
+(item.C8 * bobot.C8) +
+(item.C9 * bobot.C9) +
+(item.C10 * bobot.C10);
+return {
+nama:item.nama,
+total:total.toFixed(2)
+};
+});
+ranking.sort((a,b)=>b.total-a.total);
+ranking.forEach((item,index)=>{
+hasil.innerHTML += `
+ <tr>
+ <td>${index+1}</td>
+ <td>${item.nama}</td>
+ <td>${item.total}</td>
+ <td>
+ <button onclick="hapusHasil('${item.nama}')" class="btn-delete">
+ Hapus
+ </button>
+ </td>
+ </tr>
+ `;
+});
+</script>
+<script src="app.js"></script>
+</body>
+</html>
